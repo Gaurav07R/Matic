@@ -9,7 +9,7 @@ function TableComponent({ darkMode }) {
   }, []);
 
   return (
-    <div className="lg:w-1/2">
+    <div className="lg:mx-5 lg:w-1/2">
       <div className="overflow-x-auto mx-auto">
         <div
           className={`max-w-full sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl border ${
@@ -50,12 +50,13 @@ function TableComponent({ darkMode }) {
                     {period.Start_Date} - {period.End_Date}
                   </td>
                   <td
-                    className={` font-semibold px-2 py-2 text-xs border-b border-gray-300  ${
-                      period.Max_Drawdown < 0 ? "text-red-500 " : "text-green-500 "
-                    }`}
-                  >
-                    {period.Max_Drawdown}
-                  </td>
+  className={`font-semibold px-2 py-2 text-xs border-b border-gray-300 ${
+    period.Max_Drawdown < 0 ? "text-red-500" : "text-green-500"
+  }`}
+>
+  {period.Max_Drawdown.toFixed(3)} {/* Displaying the Max_Drawdown value with 2 decimal places */}
+</td>
+
                   <td
                     className={`px-2 py-2 text-xs border-b border-gray-300 ${
                       darkMode ? "text-white" : ""

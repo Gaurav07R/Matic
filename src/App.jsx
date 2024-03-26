@@ -55,11 +55,11 @@ function App() {
         </label>
       </div>
       <div className="flex items-center mb-4">
-      <img
+      {/* <img
         className="h-20 mr-4"
         src={logo}
         alt=""
-      />
+      /> */}
       <h5 className={`text-xl font-bold ${darkMode ? "text-white" : "text-black"}`}>
         Drawdown Periods
       </h5>
