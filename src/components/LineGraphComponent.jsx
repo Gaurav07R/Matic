@@ -26,7 +26,7 @@ const LineGraphComponent = ({ darkMode }) => {
     const seriesData = cumsumValues.map((value, index) => {
       let color;
       if (index > 0) {
-        color = value > cumsumValues[index - 1] ? "gray" : "red";
+        color = value > cumsumValues[index - 3] ? "gray" : "red";
       } else {
         color = "red";
       }
