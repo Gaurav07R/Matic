@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import LineGraphComponent from "./components/LineGraphComponent";
 import TableComponent from "./components/TableComponent";
-import logo from './assets/icons8-logo.svg'
+// import logo from './assets/icons8-logo.svg'
 function App() {
   const [darkMode, setDarkMode] = useState(false);
 

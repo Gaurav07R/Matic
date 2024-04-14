@@ -54,7 +54,7 @@ function TableComponent({ darkMode }) {
     period.Max_Drawdown < 0 ? "text-red-500" : "text-green-500"
   }`}
 >
-  {period.Max_Drawdown.toFixed(3)} {/* Displaying the Max_Drawdown value with 2 decimal places */}
+  {period.Max_Drawdown.toFixed(2)} {/* Displaying the Max_Drawdown value with 2 decimal places */}
 </td>
 
                   <td

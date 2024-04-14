@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { createChart } from "lightweight-charts";
 import jsonData from "../data/returns.json";
 import { useMediaQuery } from "react-responsive";
-import logo from "../assets/icons8-logo.svg"; // Import the logo image
+import logo from "../assets/icons8-logo.svg";
 
 const LineGraphComponent = ({ darkMode }) => {
   const chartContainer = useRef(null);
@@ -10,33 +10,7 @@ const LineGraphComponent = ({ darkMode }) => {
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
   useEffect(() => {
-    const chart = createChart(chartContainer.current);
-
-    // Extracting data based on the selected key
-    const selectedData = jsonData.data[selectedKey];
-    const dates = selectedData.map((item) => item.date);
-    const cumsumValues = selectedData.map((item) => item.cumsum);
-
-    // Chart data
-    const lineSeries = chart.addLineSeries({
-      lineWidth: 2,
-      color: "#2962FF", // Initial color
-    });
-
-    const seriesData = cumsumValues.map((value, index) => {
-      let color;
-      if (index > 0) {
-        color = value > cumsumValues[index - 3] ? "gray" : "red";
-      } else {
-        color = "red";
-      }
-      return { time: dates[index], value: value, color: color };
-    });
-
-    lineSeries.setData(seriesData);
-
-    // Apply chart options
-    chart.applyOptions({
+    const chart = createChart(chartContainer.current, {
       layout: {
         background: {
           color: darkMode ? "#333333" : "#f8f8f8",
@@ -84,7 +58,38 @@ const LineGraphComponent = ({ darkMode }) => {
       },
     });
 
-    // Position the logo on the chart
+    const selectedData = jsonData.data[selectedKey];
+    const dates = selectedData.map((item) => item.date);
+    const cumsumValues = selectedData.map((item) => item.cumsum);
+
+    const lineSeries = chart.addLineSeries({
+      lineWidth: 2,
+    });
+
+    const seriesData = cumsumValues.map((value, index) => {
+      let color = darkMode ? "#2962FF" : "#000000"; // Default color
+
+      // Check for each specified date range and change color to red if condition met
+      if (
+        (dates[index] >= "2024-02-21" && dates[index] <= "2024-03-14") ||
+        (dates[index] >= "2024-02-14" && dates[index] <= "2024-02-16") ||
+        (dates[index] >= "2024-01-31" && dates[index] <= "2024-02-08") ||
+        (dates[index] >= "2024-01-08" && dates[index] <= "2024-01-17")
+      ) {
+        color = "red";
+      } else {
+        color = darkMode ? "gray" : "#808080";
+      }
+      
+      return { time: dates[index], value: value, color: color };
+    });
+
+    lineSeries.setData(seriesData);
+
+    chart.applyOptions({
+      // Your chart options here
+    });
+
     const img = document.createElement("img");
     img.src = logo;
     img.style.position = "absolute";
@@ -93,10 +98,9 @@ const LineGraphComponent = ({ darkMode }) => {
     img.style.width = "100px";
     img.style.height = "auto";
     img.style.zIndex = 1;
-    img.style.opacity = 0.4; // Adjust the opacity value as needed (0.5 for 50% opacity)
+    img.style.opacity = 0.4;
     chartContainer.current.appendChild(img);
 
-    // Set the z-index of the line series to ensure it appears above the logo
     const lineSeriesElement =
       chartContainer.current.querySelector(".line-series");
     if (lineSeriesElement) {
@@ -105,8 +109,21 @@ const LineGraphComponent = ({ darkMode }) => {
 
     chart.timeScale().fitContent();
 
+    const handleMouseMove = (event) => {
+      // Handle mouse move event
+    };
+    
+    const handleMouseLeave = () => {
+      // Handle mouse leave event
+    };
+
+    chartContainer.current.addEventListener("mousemove", handleMouseMove);
+    chartContainer.current.addEventListener("mouseleave", handleMouseLeave);
+
     return () => {
       chart.removeSeries(lineSeries);
+      chartContainer.current.removeEventListener("mousemove", handleMouseMove);
+      chartContainer.current.removeEventListener("mouseleave", handleMouseLeave);
       chart.remove();
     };
   }, [darkMode, selectedKey, isMobile]);
@@ -117,7 +134,6 @@ const LineGraphComponent = ({ darkMode }) => {
 
   return (
     <div className={`  ${isMobile ? "w-80" : "w-2/3"}`}>
-      {/* Dropdown menu */}
       <select
         value={selectedKey}
         onChange={handleSelectChange}
